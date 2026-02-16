@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         },
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Carry You',
+          title: 'CarryU',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),

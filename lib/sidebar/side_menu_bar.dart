@@ -74,7 +74,7 @@ class SideMenuDrawer extends StatelessWidget {
 
           // Navigation Items
           _buildDrawerItem(Icons.home_outlined, "Home",1, isSelected: false),
-          _buildDrawerItem(Icons.access_time, "Job History",2),
+          _buildDrawerItem(Icons.access_time, "Ride History",2),
           // _buildDrawerItem(Icons.account_balance_wallet_outlined, "Payment Status",3),
           _buildDrawerItem(Icons.notifications_none, "Notifications",4),
           _buildDrawerItem(Icons.person_outline, "My Profile",5),

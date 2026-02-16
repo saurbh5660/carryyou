@@ -21,7 +21,7 @@ class WalletScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          "Uber Money", // Matching the UI Title
+          "CarryU Money", // Matching the UI Title
           style: GoogleFonts.inter(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -41,7 +41,7 @@ class WalletScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Uber Cash",
+                    "CarryU Cash",
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       color: Colors.black54,

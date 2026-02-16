@@ -22,6 +22,7 @@ class TrackMapController extends GetxController
   int selectedTripIndex = 0;
   DateTime? scheduleDate;
   String? scheduleTime = "";
+  String bookingId = "";
   bool? isScheduled = false;
   final SocketService socketService = SocketService();
   RxInt currentStep = 2.obs;
@@ -44,6 +45,7 @@ class TrackMapController extends GetxController
   @override
   onInit() {
     super.onInit();
+    bookingId = Get.arguments?["bookingId"] ?? "";
     socketService.connectToServer();
     locationService = LocationService(this);
     socketService.setListener(this);
@@ -298,7 +300,7 @@ class TrackMapController extends GetxController
   }
   Future<void> updateStatus(String status, String selectedReason) async {
     final Map<String, dynamic> map = {
-      "bookingId": Get.arguments?["bookingId"] ?? "",
+      "bookingId": bookingId,
       "status": status,
       "reason": selectedReason,
     };

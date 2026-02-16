@@ -16,16 +16,16 @@ class ActivityScreen extends GetView<ActivityController> {
     Get.put(ActivityController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8), // Subtle off-white background
+      backgroundColor: const Color(0xFFF8F8F8),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
-        title: Text("Activity",
+        title: Text("Ride History",
             style: GoogleFonts.montserrat(
                 color: Colors.black,
                 fontWeight: FontWeight.w800,
-                fontSize: 32,
+                fontSize: 24,
                 letterSpacing: -0.5)),
       ),
       body: Obx(() {

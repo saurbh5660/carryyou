@@ -172,7 +172,7 @@ class RideBookingController extends GetxController {
           paymentIntentClientSecret: response.body?.paymentIntent?.clientSecret ?? "",
           customerEphemeralKeySecret: response.body?.ephemeralKey ?? "",
           customerId: response.body?.customer ?? "",
-          merchantDisplayName: "Carry You",
+          merchantDisplayName: "CarryU",
         ),
       );
 
