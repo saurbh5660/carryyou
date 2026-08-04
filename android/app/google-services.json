@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "421552343245",
+    "project_id": "carryu-801c0",
+    "storage_bucket": "carryu-801c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421552343245:android:1b8f99536e646850b2c184",
+        "android_client_info": {
+          "package_name": "com.live.carry_you_user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFp7feJWvu3jvZgsxB79l6u-bKWrkTHOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

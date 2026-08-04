@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>CarryU</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>CarryU</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tel</string>
+		<string>telprompt</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Carry You uses the camera so you can add profile, vehicle, license, ride, and lost-item photos or videos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Carry You uses your location while the app is open to find your pickup point, show nearby rides, and track active bookings.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Carry You may use your location during active ride bookings to keep pickup, drop-off, and driver tracking information accurate.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Carry You may use your location during active ride bookings to keep pickup, drop-off, and driver tracking information accurate.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Carry You uses the microphone when you record a video for your profile, vehicle, ride, or lost-item details.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Carry You uses your photo library so you can upload profile, vehicle, license, ride, and lost-item photos or videos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Carry You may save edited photos or videos to your photo library when you choose to keep them.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
+</plist>
