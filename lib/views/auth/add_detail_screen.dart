@@ -208,7 +208,7 @@ class _AddDetailScreenState extends State<AddDetailScreen> {
               ),
             ),
             popupProps: const PopupProps.menu(fit: FlexFit.loose),
-            onChanged: (selectedValue) {
+            onSelected: (selectedValue) {
               controller.selectedGender.value = selectedValue.toString();
             },
           ),

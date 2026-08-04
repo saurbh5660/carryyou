@@ -52,9 +52,16 @@ class RideBookingController extends GetxController {
   void onInit() {
     super.onInit();
     // Initialize with arguments passed from previous screen
-    Logger().d("fffffffff---- "+(Get.arguments?["pickup_lat"] ?? 0.0).toString());
-    Logger().d("nnnnnnnnn----- "+(Get.arguments?["pickup_lng"] ?? 0.0).toString());
-    Logger().d("nnnnnnnnnrrr----- "+(Get.arguments?["pickup_address"] ?? 0.0).toString());
+    Logger().d(
+      "fffffffff---- " + (Get.arguments?["pickup_lat"] ?? 0.0).toString(),
+    );
+    Logger().d(
+      "nnnnnnnnn----- " + (Get.arguments?["pickup_lng"] ?? 0.0).toString(),
+    );
+    Logger().d(
+      "nnnnnnnnnrrr----- " +
+          (Get.arguments?["pickup_address"] ?? 0.0).toString(),
+    );
     pickupLat.value = Get.arguments?["pickup_lat"] ?? 0.0;
     pickupLng.value = Get.arguments?["pickup_lng"] ?? 0.0;
     pickupLocation.value = Get.arguments?["pickup_address"] ?? "";
@@ -64,7 +71,9 @@ class RideBookingController extends GetxController {
 
   // Updates address when the user drags the map in Step 0
   void onMapIdle() async {
-    if (_shouldUpdateAddress && tempCenterLocation != null && currentStep.value == 0) {
+    if (_shouldUpdateAddress &&
+        tempCenterLocation != null &&
+        currentStep.value == 0) {
       pickupLat.value = tempCenterLocation!.latitude;
       pickupLng.value = tempCenterLocation!.longitude;
       await updateAddressFromLocation(pickupLat.value, pickupLng.value);
@@ -72,7 +81,6 @@ class RideBookingController extends GetxController {
     }
     _shouldUpdateAddress = true;
   }
-
 
   Future<void> updateAddressFromLocation(double lat, double lng) async {
     try {
@@ -103,7 +111,8 @@ class RideBookingController extends GetxController {
       if (response.success == true) {
         isCouponApplied.value = true;
         appliedCouponCode.value = couponTextController.text.trim();
-        discountPercentage.value = (response.body?.percentageOff ?? 0).toDouble();
+        discountPercentage.value = (response.body?.percentageOff ?? 0)
+            .toDouble();
 
         Utils.showSuccessToast(message: "Coupon applied successfully!");
         vehicleTypes.refresh();
@@ -146,9 +155,10 @@ class RideBookingController extends GetxController {
       double.tryParse(Get.arguments?["dest_lng"].toString() ?? "0") ?? 0.0,
     );
 
-    PolylinePoints polylinePoints = PolylinePoints();
+    PolylinePoints polylinePoints = PolylinePoints.legacy(
+      ApiConstants.placesKey,
+    );
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleApiKey: ApiConstants.placesKey,
       request: PolylineRequest(
         origin: PointLatLng(origin.latitude, origin.longitude),
         destination: PointLatLng(destination.latitude, destination.longitude),
@@ -157,34 +167,66 @@ class RideBookingController extends GetxController {
     );
 
     if (result.points.isNotEmpty) {
-      markers.value = {
-        Marker(markerId: const MarkerId("src"), position: origin, icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed)),
-        Marker(markerId: const MarkerId("dst"), position: destination,  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow)),
-      };
+      markers.assignAll({
+        Marker(
+          markerId: const MarkerId("src"),
+          position: origin,
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+        ),
+        Marker(
+          markerId: const MarkerId("dst"),
+          position: destination,
+          icon: BitmapDescriptor.defaultMarkerWithHue(
+            BitmapDescriptor.hueYellow,
+          ),
+        ),
+      });
 
-      List<LatLng> coords = result.points.map((p) => LatLng(p.latitude, p.longitude)).toList();
-      polylines.add(Polyline(
-        polylineId: const PolylineId("route"),
-        points: coords,
-        color: Colors.black,
-        width: 2,
-      ));
+      List<LatLng> coords = result.points
+          .map((p) => LatLng(p.latitude, p.longitude))
+          .toList();
+      polylines.add(
+        Polyline(
+          polylineId: const PolylineId("route"),
+          points: coords,
+          color: Colors.black,
+          width: 2,
+        ),
+      );
 
       if (result.distanceValues != null && result.distanceValues!.isNotEmpty) {
-        double miles = result.distanceValues!.reduce((a, b) => a + b) * 0.000621371;
+        double miles =
+            result.distanceValues!.reduce((a, b) => a + b) * 0.000621371;
         distance.value = "${miles.toStringAsFixed(1)} miles";
       }
 
       // Delay to ensure padding is applied before the camera moves
-      Future.delayed(const Duration(milliseconds: 150), () => updateCameraBounds(origin, destination));
+      Future.delayed(
+        const Duration(milliseconds: 150),
+        () => updateCameraBounds(origin, destination),
+      );
     }
     isLoading.value = false;
   }
 
   void updateCameraBounds(LatLng origin, LatLng destination) {
     LatLngBounds bounds = LatLngBounds(
-      southwest: LatLng(origin.latitude < destination.latitude ? origin.latitude : destination.latitude, origin.longitude < destination.longitude ? origin.longitude : destination.longitude),
-      northeast: LatLng(origin.latitude > destination.latitude ? origin.latitude : destination.latitude, origin.longitude > destination.longitude ? origin.longitude : destination.longitude),
+      southwest: LatLng(
+        origin.latitude < destination.latitude
+            ? origin.latitude
+            : destination.latitude,
+        origin.longitude < destination.longitude
+            ? origin.longitude
+            : destination.longitude,
+      ),
+      northeast: LatLng(
+        origin.latitude > destination.latitude
+            ? origin.latitude
+            : destination.latitude,
+        origin.longitude > destination.longitude
+            ? origin.longitude
+            : destination.longitude,
+      ),
     );
     mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 70));
   }
@@ -206,7 +248,8 @@ class RideBookingController extends GetxController {
     if (vehicleTypes.isEmpty) return;
 
     var selectedVehicle = vehicleTypes[selectedTripIndex.value];
-    double originalFare = double.tryParse(selectedVehicle.estimatedFare.toString()) ?? 0.0;
+    double originalFare =
+        double.tryParse(selectedVehicle.estimatedFare.toString()) ?? 0.0;
 
     double finalAmount = calculateDiscountedFare(originalFare);
     Utils.showLoading();
@@ -235,10 +278,12 @@ class RideBookingController extends GetxController {
     Utils.hideLoading();
 
     if (response.success == true) {
-      Stripe.publishableKey = "pk_test_51ROCVqPR0LipSHIytuyQNFhaZMGngeu4jmIH2Zg6EI5Mq43AwRv4lShP39VaFk4mpBTnAeWhDIjmq3flfl1FAGK900bI92msNX";
+      Stripe.publishableKey =
+          "pk_test_51ROCVqPR0LipSHIytuyQNFhaZMGngeu4jmIH2Zg6EI5Mq43AwRv4lShP39VaFk4mpBTnAeWhDIjmq3flfl1FAGK900bI92msNX";
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: response.body?.paymentIntent?.clientSecret ?? "",
+          paymentIntentClientSecret:
+              response.body?.paymentIntent?.clientSecret ?? "",
           customerEphemeralKeySecret: response.body?.ephemeralKey ?? "",
           customerId: response.body?.customer ?? "",
           merchantDisplayName: "CarryU",
@@ -247,9 +292,14 @@ class RideBookingController extends GetxController {
 
       try {
         await Stripe.instance.presentPaymentSheet();
-        bool isConfirmed = await bookingConfirmation(response.body?.transactionId ?? "");
+        bool isConfirmed = await bookingConfirmation(
+          response.body?.transactionId ?? "",
+        );
         if (isConfirmed) {
-          Get.offNamed(AppRoutes.trackMapScreen, arguments: {"bookingId": response.body?.bookingId.toString()});
+          Get.offNamed(
+            AppRoutes.trackMapScreen,
+            arguments: {"bookingId": response.body?.bookingId.toString()},
+          );
         }
       } catch (e) {
         Utils.showErrorToast(message: "Payment Cancelled");
@@ -258,7 +308,9 @@ class RideBookingController extends GetxController {
   }
 
   Future<bool> bookingConfirmation(String transactionId) async {
-    var response = await ApiProvider().bookingConfirmation({"transactionId": transactionId});
+    var response = await ApiProvider().bookingConfirmation({
+      "transactionId": transactionId,
+    });
     return response.success ?? false;
   }
 }

@@ -45,7 +45,7 @@ class NotificationService {
         );
 
     await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
+      settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
         if (response.payload != null) {
           Map<String, dynamic> data = jsonDecode(response.payload!);
@@ -135,14 +135,14 @@ class NotificationService {
   Future<void> showNotifications(RemoteMessage message) async {
     int id = Random().nextInt(900) + 10;
     String payloadData = jsonEncode(message.data);
-    String title =message.data['title'] ?? "CarryU";
+    String title = message.data['title'] ?? "CarryU";
     String body = message.data['message'] ?? "New Notification";
 
     await flutterLocalNotificationsPlugin.show(
-      id,
-      title,
-      body,
-      NotificationDetails(
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,
           channel.name,
@@ -186,23 +186,34 @@ class NotificationService {
 
     switch (type) {
       case "12":
-        navigate(AppRoutes.chatScreen, args: {'id': senderId,"name":name,"image":profilePic});
+        navigate(
+          AppRoutes.chatScreen,
+          args: {'id': senderId, "name": name, "image": profilePic},
+        );
         break;
 
       case "4":
-        navigate(AppRoutes.trackMapScreen,  args: {"bookingId": bookingId.toString()});
+        navigate(
+          AppRoutes.trackMapScreen,
+          args: {"bookingId": bookingId.toString()},
+        );
         break;
 
       case "5":
-        navigate(AppRoutes.trackMapScreen,  args: {"bookingId": bookingId.toString()});
+        navigate(
+          AppRoutes.trackMapScreen,
+          args: {"bookingId": bookingId.toString()},
+        );
         break;
 
       case "6":
-        navigate(AppRoutes.rideDetailScreen,  args: {"bookingId": bookingId.toString()});
+        navigate(
+          AppRoutes.rideDetailScreen,
+          args: {"bookingId": bookingId.toString()},
+        );
         break;
       default:
         navigate(AppRoutes.notificationScreen);
     }
   }
-
 }

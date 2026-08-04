@@ -95,34 +95,30 @@ class _VerificationScreenState extends State<VerificationScreen> {
               SizedBox(height: 10),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 25),
-                child: PinCodeTextField(
+                child: MaterialPinField(
                   length: 4,
                   hintCharacter: '-',
                   obscureText: false,
-                  showCursor: true,
-                  cursorColor: Colors.black,
-                  animationType: AnimationType.scale,
                   keyboardType: TextInputType.number,
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.circle,
+                  theme: MaterialPinTheme(
+                    shape: MaterialPinShape.circle,
                     borderWidth: 0.5,
-                    fieldHeight: 60,
-                    fieldWidth: 60,
-                    activeFillColor: Colors.white,
-                    inactiveFillColor: Colors.white,
-                    inactiveColor: Colors.grey.shade200,
-                    selectedColor: AppColor.blackColor,
-                    selectedFillColor: Colors.white,
-                    activeColor: Colors.grey.shade200,
+                    cellSize: const Size(60, 60),
+                    fillColor: Colors.white,
+                    focusedFillColor: Colors.white,
+                    filledFillColor: Colors.white,
+                    borderColor: Colors.grey.shade200,
+                    focusedBorderColor: AppColor.blackColor,
+                    filledBorderColor: Colors.grey.shade200,
+                    cursorColor: Colors.black,
+                    showCursor: true,
+                    entryAnimation: MaterialPinAnimation.scale,
+                    animationDuration: const Duration(milliseconds: 300),
                   ),
-
-                  animationDuration: const Duration(milliseconds: 300),
-                  backgroundColor: Colors.transparent,
-                  enableActiveFill: true,
-                  controller: controller.otpController,
                   onCompleted: (v) {},
-                  onChanged: (value) {},
-                  appContext: context,
+                  onChanged: (value) {
+                    controller.otpController.text = value;
+                  },
                 ),
               ),
               SizedBox(height: 50),
@@ -155,7 +151,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               ),
               SizedBox(height: 30),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   controller.otpResend();
                 },
                 child: Center(
@@ -165,7 +161,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       fontSize: 15,
                       color: AppColor.redColor,
                       fontWeight: FontWeight.w500,
-                      decoration: TextDecoration.underline
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),

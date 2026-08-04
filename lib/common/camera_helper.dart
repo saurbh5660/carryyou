@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import '../common/app_colors.dart';
 
 abstract class CameraOnCompleteListener {
-  void onSuccessFile(String file, String fileType,int code);
+  void onSuccessFile(String file, String fileType, int code);
   void onSuccessVideo(String selectedUrl, Uint8List? thumbnail);
 }
 
@@ -30,7 +30,7 @@ class CameraHelper {
 
   void openAttachmentDialog() async {
     if (await isStorageEnabled()) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: [
           'pdf',
@@ -46,7 +46,7 @@ class CameraHelper {
       if (result != null) {
         File file = File(result.files.single.path!);
         debugPrint(file.path);
-        callback.onSuccessFile(file.path, "document",code);
+        callback.onSuccessFile(file.path, "document", code);
       } else {
         // user canceled the picker
       }
@@ -59,125 +59,124 @@ class CameraHelper {
       context: context,
       useRootNavigator: false,
       backgroundColor: Colors.transparent,
-      builder:
-          (BuildContext bc) => GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 55),
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      builder: (BuildContext bc) => GestureDetector(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 55),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: AppColor.appTextColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_rounded,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Camera",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                  GestureDetector(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: AppColor.appTextColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            size: 25,
+                            color: Colors.white,
+                          ),
                         ),
-                        onTap: () async {
-                          if (await isCameraEnabled()) {
-                            Navigator.pop(context);
-                            cropAspectRatio != null
-                                ? getImageWithCropping(ImageSource.camera,code)
-                                : getImageWithoutCropping(ImageSource.camera);
-                          }
-                        },
-                      ),
-                      const SizedBox(width: 60),
-                      GestureDetector(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: AppColor.appTextColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.image_rounded,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Gallery",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Camera",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
                         ),
-                        onTap: () async {
-                          if (await isStorageEnabled()) {
-                            Navigator.pop(context);
-                            cropAspectRatio != null
-                                ? getImageWithCropping(ImageSource.gallery,code)
-                                : getImageWithoutCropping(ImageSource.gallery);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  InkWell(
-                    child: const Padding(
-                      padding: EdgeInsets.all(13.0),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                      ],
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
+                      if (await isCameraEnabled()) {
+                        Navigator.pop(context);
+                        cropAspectRatio != null
+                            ? getImageWithCropping(ImageSource.camera, code)
+                            : getImageWithoutCropping(ImageSource.camera);
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 60),
+                  GestureDetector(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: AppColor.appTextColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.image_rounded,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Gallery",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      if (await isStorageEnabled()) {
+                        Navigator.pop(context);
+                        cropAspectRatio != null
+                            ? getImageWithCropping(ImageSource.gallery, code)
+                            : getImageWithoutCropping(ImageSource.gallery);
+                      }
                     },
                   ),
                 ],
               ),
-            ),
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusScopeNode());
-            },
+              const SizedBox(height: 15),
+              InkWell(
+                child: const Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
+        ),
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusScopeNode());
+        },
+      ),
     );
   }
 
@@ -186,121 +185,120 @@ class CameraHelper {
       context: context,
       useRootNavigator: false,
       backgroundColor: Colors.transparent,
-      builder:
-          (BuildContext bc) => GestureDetector(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      builder: (BuildContext bc) => GestureDetector(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: AppColor.appTextColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_rounded,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Camera",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                  GestureDetector(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: AppColor.appTextColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            size: 25,
+                            color: Colors.white,
+                          ),
                         ),
-                        onTap: () async {
-                          if (await isCameraEnabled()) {
-                            Navigator.pop(context);
-                            getVideo(ImageSource.camera);
-                          }
-                        },
-                      ),
-                      const SizedBox(width: 60),
-                      GestureDetector(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: AppColor.blackColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.image_rounded,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            const Text(
-                              "Gallery",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Camera",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
                         ),
-                        onTap: () async {
-                          if (await isStorageEnabled()) {
-                            Navigator.pop(context);
-                            getVideo(ImageSource.gallery);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15),
-                  InkWell(
-                    child: const Padding(
-                      padding: EdgeInsets.all(13.0),
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                      ],
                     ),
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
+                      if (await isCameraEnabled()) {
+                        Navigator.pop(context);
+                        getVideo(ImageSource.camera);
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 60),
+                  GestureDetector(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: AppColor.blackColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.image_rounded,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Gallery",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () async {
+                      if (await isStorageEnabled()) {
+                        Navigator.pop(context);
+                        getVideo(ImageSource.gallery);
+                      }
                     },
                   ),
                 ],
               ),
-            ),
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusScopeNode());
-            },
+              const SizedBox(height: 15),
+              InkWell(
+                child: const Padding(
+                  padding: EdgeInsets.all(13.0),
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
           ),
+        ),
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusScopeNode());
+        },
+      ),
     );
     return false;
   }
@@ -363,7 +361,7 @@ class CameraHelper {
             if (await isCameraEnabled()) {
               Navigator.pop(context);
               cropAspectRatio != null
-                  ? getImageWithCropping(ImageSource.camera,code)
+                  ? getImageWithCropping(ImageSource.camera, code)
                   : getImageWithoutCropping(ImageSource.camera);
             }
           },
@@ -377,7 +375,7 @@ class CameraHelper {
             if (await isStorageEnabled()) {
               Navigator.pop(context);
               cropAspectRatio != null
-                  ? getImageWithCropping(ImageSource.gallery,code)
+                  ? getImageWithCropping(ImageSource.gallery, code)
                   : getImageWithoutCropping(ImageSource.gallery);
             }
           },
@@ -395,8 +393,8 @@ class CameraHelper {
     );
   }
 
-  Future getImageWithCropping(ImageSource imageSource,int code) async {
-    this.code= code;
+  Future getImageWithCropping(ImageSource imageSource, int code) async {
+    this.code = code;
     XFile? imageFile = await picker.pickImage(source: imageSource);
     CroppedFile? croppedFile;
     if (imageFile != null) {
@@ -416,13 +414,13 @@ class CameraHelper {
             title: "Cropper",
             cropStyle: CropStyle.rectangle,
             minimumAspectRatio: 1.0,
-            aspectRatioLockEnabled: false
+            aspectRatioLockEnabled: false,
           ),
         ],
       );
     }
     if (croppedFile != null) {
-      callback.onSuccessFile(croppedFile.path, "image",code);
+      callback.onSuccessFile(croppedFile.path, "image", code);
     } else {
       print('No image selected.');
     }
@@ -431,7 +429,7 @@ class CameraHelper {
   Future getImageWithoutCropping(ImageSource imageSource) async {
     XFile? imageFile = await picker.pickImage(source: imageSource);
     if (imageFile != null) {
-      callback.onSuccessFile(imageFile.path, "image",code);
+      callback.onSuccessFile(imageFile.path, "image", code);
     } else {
       print('No image selected.');
     }

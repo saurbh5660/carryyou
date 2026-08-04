@@ -481,11 +481,12 @@ class TrackMapController extends GetxController
     Logger().d(
       "origgnlaaaaa--- ${origin.latitude} origgnlngggg---   ${origin.longitude} desttttlatttttt--- ${destination.latitude} destinlnggggg----- ${destination.longitude}",
     );
-    PolylinePoints polylinePoints = PolylinePoints();
+    PolylinePoints polylinePoints = PolylinePoints.legacy(
+      ApiConstants.placesKey,
+    );
 
     try {
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleApiKey: ApiConstants.placesKey,
         request: PolylineRequest(
           origin: PointLatLng(origin.latitude, origin.longitude),
           destination: PointLatLng(destination.latitude, destination.longitude),

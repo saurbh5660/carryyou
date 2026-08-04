@@ -18,13 +18,14 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
     {
       "name": "Bank of America",
       "acc": "**** **** 9081",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bank_of_America_logo.svg/2560px-Bank_of_America_logo.svg.png"
+      "logo":
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bank_of_America_logo.svg/2560px-Bank_of_America_logo.svg.png",
     },
     {
       "name": "Wells Fargo",
       "acc": "**** **** 9081",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bank_of_America_logo.svg/2560px-Bank_of_America_logo.svg.png"
-
+      "logo":
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bank_of_America_logo.svg/2560px-Bank_of_America_logo.svg.png",
     },
   ];
 
@@ -69,7 +70,9 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
 
             // --- Dynamic Bank List ---
             ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 300), // Limits height for scrollable list
+              constraints: const BoxConstraints(
+                maxHeight: 300,
+              ), // Limits height for scrollable list
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -89,11 +92,12 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
 
             // --- Add New Bank Button ---
             DottedBorder(
-              color: Colors.grey.shade400,
-              strokeWidth: 1,
-              dashPattern: const [6, 3],
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(15),
+              options: RoundedRectDottedBorderOptions(
+                color: Colors.grey.shade400,
+                strokeWidth: 1,
+                dashPattern: const [6, 3],
+                radius: const Radius.circular(15),
+              ),
               child: SizedBox(
                 width: double.infinity,
                 height: 60,
@@ -164,7 +168,9 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-            color: isSelected ? Colors.black.withOpacity(0.1) : Colors.grey.shade100,
+            color: isSelected
+                ? Colors.black.withOpacity(0.1)
+                : Colors.grey.shade100,
           ),
           boxShadow: [
             BoxShadow(
@@ -179,7 +185,12 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Bank Logo
-              Image.network(logoUrl, width: 80, height: 40, fit: BoxFit.contain),
+              Image.network(
+                logoUrl,
+                width: 80,
+                height: 40,
+                fit: BoxFit.contain,
+              ),
               const SizedBox(width: 15),
               // Bank Details
               Expanded(
@@ -200,7 +211,6 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
                         fontSize: 12,
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -215,8 +225,12 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: isSelected ? Colors.black : Colors.grey.shade400,
-                          width: isSelected ? 7 : 2, // Thicker border simulates "filled" state
+                          color: isSelected
+                              ? Colors.black
+                              : Colors.grey.shade400,
+                          width: isSelected
+                              ? 7
+                              : 2, // Thicker border simulates "filled" state
                         ),
                         color: Colors.white,
                       ),
@@ -231,7 +245,6 @@ class _MyBankAccountsScreenState extends State<MyBankAccountsScreen> {
                       ),
                     ),
                   ],
-
                 ),
               ),
             ],

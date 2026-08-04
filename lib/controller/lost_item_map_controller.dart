@@ -27,14 +27,18 @@ class LostItemMapController extends GetxController implements SocketListener {
   RxDouble heading = 0.0.obs;
 
   LatLng get dropOffLatLng {
-    double lat = double.tryParse(requestBody.value.driver?.latitude ?? "0.0") ?? 0.0;
-    double lng = double.tryParse(requestBody.value.driver?.longitude ?? "0.0") ?? 0.0;
+    double lat =
+        double.tryParse(requestBody.value.driver?.latitude ?? "0.0") ?? 0.0;
+    double lng =
+        double.tryParse(requestBody.value.driver?.longitude ?? "0.0") ?? 0.0;
     return LatLng(lat, lng);
   }
 
   LatLng get pickupLatLng {
-    double lat = double.tryParse(requestBody.value.dropLatitude ?? "0.0") ?? 0.0;
-    double lng = double.tryParse(requestBody.value.dropLongitude ?? "0.0") ?? 0.0;
+    double lat =
+        double.tryParse(requestBody.value.dropLatitude ?? "0.0") ?? 0.0;
+    double lng =
+        double.tryParse(requestBody.value.dropLongitude ?? "0.0") ?? 0.0;
     return LatLng(lat, lng);
   }
 
@@ -67,13 +71,15 @@ class LostItemMapController extends GetxController implements SocketListener {
       targetHeight: targetWidth.toInt(),
     );
     ui.FrameInfo fi = await codec.getNextFrame();
-    final bytes = (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    final bytes = (await fi.image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
     return BitmapDescriptor.fromBytes(bytes);
   }
 
   Future<void> getRequestDetail() async {
     final Map<String, dynamic> map = {
-      "lostItemId": Get.arguments?["requestId"] ?? ""
+      "lostItemId": Get.arguments?["requestId"] ?? "",
     };
     var response = await ApiProvider().lostItemRequestDetail(map, true);
     if (response.success == true) {
@@ -83,26 +89,32 @@ class LostItemMapController extends GetxController implements SocketListener {
   }
 
   Future<void> fetchRoute() async {
-    PolylinePoints polylinePoints = PolylinePoints();
+    PolylinePoints polylinePoints = PolylinePoints.legacy(
+      ApiConstants.placesKey,
+    );
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleApiKey: ApiConstants.placesKey,
       request: PolylineRequest(
         origin: PointLatLng(pickupLatLng.latitude, pickupLatLng.longitude),
-        destination: PointLatLng(dropOffLatLng.latitude, dropOffLatLng.longitude),
+        destination: PointLatLng(
+          dropOffLatLng.latitude,
+          dropOffLatLng.longitude,
+        ),
         mode: TravelMode.driving,
       ),
     );
 
     if (result.points.isNotEmpty) {
-      List<LatLng> coords = result.points.map((p) => LatLng(p.latitude, p.longitude)).toList();
-      polylines.value = {
+      List<LatLng> coords = result.points
+          .map((p) => LatLng(p.latitude, p.longitude))
+          .toList();
+      polylines.assignAll({
         Polyline(
           polylineId: const PolylineId("lost_item_route"),
           color: Colors.black,
           points: coords,
           width: 5,
         ),
-      };
+      });
       _updateCamera(coords);
     }
   }
@@ -133,5 +145,4 @@ class LostItemMapController extends GetxController implements SocketListener {
       }
     }
   }
-
 }
