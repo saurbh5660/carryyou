@@ -184,12 +184,12 @@ class _TrackMapScreenState extends State<TrackMapScreen> {
     switch (controller.requestBody.value.status) {
       case 0:
         return _connectingSheet();
-      case 1:
+      case 1 || 2 || 3 || 10:
         return _driverArrivalSheet();
       case 4 || 5 || 6:
         return _completeRideSheet();
       default:
-        return SizedBox();
+        return _driverArrivalSheet();
     }
   }
 
@@ -459,92 +459,138 @@ class _TrackMapScreenState extends State<TrackMapScreen> {
               const SizedBox(height: 25),
         
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    // Ensures the whole component is centered in the screen
-                    child: SizedBox(
-                      width: 140,
-                      // Define a width that accommodates both Avatar + offset Car
-                      height: 100,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.centerLeft,
-                        // Aligns Avatar to the left
-                        children: [
-                          // 1. Driver Image
-                          ClipOval(
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  ApiConstants.userImageUrl +
-                                  (controller
-                                          .requestBody
-                                          .value
-                                          .driver
-                                          ?.profilePicture ??
-                                      ""),
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Shimmer.fromColors(
-                                baseColor: Colors.grey.shade300,
-                                highlightColor: Colors.grey.shade100,
-                                child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  color: Colors.white,
-                                ),
+                  // 1. Driver Image & Car Graphic Stack
+                  SizedBox(
+                    width: 100,
+                    height: 95,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.topLeft,
+                      children: [
+                        ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: ApiConstants.userImageUrl +
+                                (controller
+                                        .requestBody
+                                        .value
+                                        .driver
+                                        ?.profilePicture ??
+                                    ""),
+                            width: 68,
+                            height: 68,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                width: 68,
+                                height: 68,
+                                color: Colors.white,
                               ),
-                              errorWidget: (context, error, stackTrace) {
-                                return Image.asset(
-                                  Assets.images.imagePlaceholder.path,
-                                  fit: BoxFit.cover,
-                                  width: 80,
-                                  height: 80,
-                                );
-                              },
                             ),
+                            errorWidget: (context, error, stackTrace) {
+                              return Image.asset(
+                                Assets.images.imagePlaceholder.path,
+                                fit: BoxFit.cover,
+                                width: 68,
+                                height: 68,
+                              );
+                            },
                           ),
-        
-                          Positioned(
-                            right: -40,
-                            bottom: -5,
-                            child: Image.asset(
-                              Assets.icons.car.path,
-                              width: 150,
-                              fit: BoxFit.contain,
-                            ),
+                        ),
+                        Positioned(
+                          right: -15,
+                          bottom: 0,
+                          child: Image.asset(
+                            Assets.icons.car.path,
+                            width: 90,
+                            fit: BoxFit.contain,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  // Name and Car Plate
+                  const SizedBox(width: 14),
+
+                  // 2. Driver Name, Car Model, Car Color & Plate Badge
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Driver Name
                         Text(
-                          controller.requestBody.value.driver?.fullName?.split(' ').first ?? "",
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-        
-                        Text(
-                          'Car Model: ${controller.requestBody.value.driver?.vehicleModel ??
-                              ""}',
-                          style: TextStyle(
+                          controller.requestBody.value.driver?.fullName ?? "Driver",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
                             color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
                           ),
                         ),
-                        Text(
-                          'Car Number: ${controller.requestBody.value.driver?.vehicleNumber ??
-                              ""}',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
+                        const SizedBox(height: 4),
+
+                        // Explicit Car Model text
+                        RichText(
+                          text: TextSpan(
+                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.black87),
+                            children: [
+                              TextSpan(
+                                text: 'Car Model: ',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                              TextSpan(
+                                text: controller.requestBody.value.driver?.vehicleModel ?? "N/A",
+                                style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+
+                        // Explicit Car Color text
+                        RichText(
+                          text: TextSpan(
+                            style: GoogleFonts.poppins(fontSize: 13, color: Colors.black87),
+                            children: [
+                              TextSpan(
+                                text: 'Car Color: ',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey.shade700,
+                                ),
+                              ),
+                              TextSpan(
+                                text: controller.requestBody.value.driver?.vehicleColor ?? "N/A",
+                                style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+
+                        // License Plate Badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFF8E1),
+                            border: Border.all(color: Colors.amber.shade800, width: 1.2),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            'Plate: ${controller.requestBody.value.driver?.vehicleNumber ?? "N/A"}'
+                                .toUpperCase(),
+                            style: GoogleFonts.montserrat(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              letterSpacing: 0.6,
+                            ),
                           ),
                         ),
                       ],
@@ -1116,15 +1162,62 @@ class _TrackMapScreenState extends State<TrackMapScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      _carDetailText(
-                        "Car Model - ${controller.requestBody.value.driver?.vehicleModel ?? ""}",
+                      const SizedBox(height: 6),
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.poppins(fontSize: 13, color: Colors.black87),
+                          children: [
+                            TextSpan(
+                              text: 'Car Model: ',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: controller.requestBody.value.driver?.vehicleModel ?? "N/A",
+                              style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
                       ),
-                      _carDetailText(
-                        "Car Color - ${controller.requestBody.value.driver?.vehicleColor ?? ""}",
+                      const SizedBox(height: 2),
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.poppins(fontSize: 13, color: Colors.black87),
+                          children: [
+                            TextSpan(
+                              text: 'Car Color: ',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            TextSpan(
+                              text: controller.requestBody.value.driver?.vehicleColor ?? "N/A",
+                              style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
                       ),
-                      _carDetailText(
-                        "Car Number- ${controller.requestBody.value.driver?.vehicleNumber ?? ""}",
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF8E1),
+                          border: Border.all(color: Colors.amber.shade800, width: 1.2),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          'Plate: ${controller.requestBody.value.driver?.vehicleNumber ?? "N/A"}'
+                              .toUpperCase(),
+                          style: GoogleFonts.montserrat(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            letterSpacing: 0.6,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -1326,15 +1419,6 @@ class _TrackMapScreenState extends State<TrackMapScreen> {
     );
   }
 
-  Widget _carDetailText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 2),
-      child: Text(
-        text,
-        style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-      ),
-    );
-  }
 
   void showRideCompletedDialog(BuildContext context) {
     showDialog(

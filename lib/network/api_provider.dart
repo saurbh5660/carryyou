@@ -17,6 +17,8 @@ import '../model/common_response.dart';
 import '../model/lost_item_request_detail_response.dart';
 import '../model/notification_list_response.dart';
 import '../model/promo_code_response.dart';
+import '../model/cms_response.dart';
+import '../model/cms_pdf_response.dart';
 import 'api_constants.dart';
 import 'base_client.dart';
 import 'package:dio/dio.dart' as dio;
@@ -28,6 +30,85 @@ class ApiProvider {
   ApiProvider() {
     _baseClient = BaseClient();
     _baseClient.init();
+  }
+
+  Future<CmsResponse> cmsContentApi(int type) async {
+    ApiRequest apiRequest = ApiRequest(
+      url: ApiConstants.usersCms,
+      requestType: RequestType.post,
+      body: {"type": type.toString()},
+    );
+    try {
+      var response = await _baseClient.handleRequest(apiRequest);
+      return CmsResponse.fromJson(response);
+    } catch (e) {
+      final res = (e as dynamic).response;
+      if (res != null) {
+        return CmsResponse.fromJson(res?.data);
+      }
+      return CmsResponse(message: e.toString());
+    }
+  }
+
+  Future<CmsResponse> cms(int type) async {
+    Utils.showLoading();
+    String urlWithParams = "${ApiConstants.cms}/$type";
+    ApiRequest apiRequest = ApiRequest(
+      url: urlWithParams,
+      requestType: RequestType.get,
+    );
+    try {
+      var response = await _baseClient.handleRequest(apiRequest);
+      Utils.hideLoading();
+      return CmsResponse.fromJson(response);
+    } catch (e) {
+      Utils.hideLoading();
+      final res = (e as dynamic).response;
+      if (res != null) {
+        return CmsResponse.fromJson(res?.data);
+      }
+      return CmsResponse(message: e.toString());
+    }
+  }
+
+  Future<CmsResponse> getCmsContentApi(String type) async {
+    Utils.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+      url: "${ApiConstants.getCmsContent}?type=$type",
+      requestType: RequestType.get,
+    );
+    try {
+      var response = await _baseClient.handleRequest(apiRequest);
+      Utils.hideLoading();
+      return CmsResponse.fromJson(response);
+    } catch (e) {
+      Utils.hideLoading();
+      final res = (e as dynamic).response;
+      if (res != null) {
+        return CmsResponse.fromJson(res?.data);
+      }
+      return CmsResponse(message: e.toString());
+    }
+  }
+
+  Future<CmsPdfResponse> cmsDownloadPdfApi(int type) async {
+    Utils.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+      url: "${ApiConstants.cmsDownloadPdf}?type=$type",
+      requestType: RequestType.get,
+    );
+    try {
+      var response = await _baseClient.handleRequest(apiRequest);
+      Utils.hideLoading();
+      return CmsPdfResponse.fromJson(response);
+    } catch (e) {
+      Utils.hideLoading();
+      final res = (e as dynamic).response;
+      if (res != null) {
+        return CmsPdfResponse.fromJson(res?.data);
+      }
+      return CmsPdfResponse(message: e.toString());
+    }
   }
 
   Future<SignupResponse> loginApi(Map<String, dynamic> body) async {
@@ -793,7 +874,7 @@ class ApiProvider {
     }
   }
 
-  Future<ContentResponse> cms(int type) async {
+  Future<CmsResponse> cms(int type) async {
     Utils.showLoading();
     String urlWithParams = "${ApiConstants.cms}/$type";
     ApiRequest apiRequest = ApiRequest(
@@ -803,14 +884,14 @@ class ApiProvider {
     try {
       var response = await _baseClient.handleRequest(apiRequest);
       Utils.hideLoading();
-      return ContentResponse.fromJson(response);
+      return CmsResponse.fromJson(response);
     } catch (e) {
       Utils.hideLoading();
       final res = (e as dynamic).response;
       if (res != null) {
-        return ContentResponse.fromJson(res?.data);
+        return CmsResponse.fromJson(res?.data);
       }
-      return ContentResponse(message: e.toString());
+      return CmsResponse(message: e.toString());
     }
   }
 

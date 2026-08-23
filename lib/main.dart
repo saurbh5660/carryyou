@@ -9,6 +9,7 @@ import 'common/app_colors.dart';
 import 'firebase_options.dart';
 import 'notification/notification_service.dart';
 
+
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

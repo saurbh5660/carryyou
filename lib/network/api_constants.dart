@@ -6,8 +6,7 @@ class ApiConstants {
   static const String userImageUrl = "http://15.206.216.86:4005";
   // static const String userImageUrl = "http://192.168.1.81:7766";
   static const String placesKey = "AIzaSyAXAv5h2hnQE1QChUPJRCGcEAcYKfOnqgI";
-
-
+  
   static const String login = "$_baseUrl/users/login";
   static const String signUp = "$_baseUrl/users/signUp";
   static const String otpVerify = "$_baseUrl/users/otpVerify";
@@ -41,6 +40,9 @@ class ApiConstants {
 
   static const String contactus = "$_baseUrl/contactus";
   static const String cms = "$_baseUrl/cms";
+  static const String usersCms = "$_baseUrl/users/cms";
+  static const String getCmsContent = "$_baseUrl/users/getCmsContent";
+  static const String cmsDownloadPdf = "$_baseUrl/users/cmsDownloadPdf";
   static const String getTask = "$_baseUrl/get_task";
   static const String changePassword = "$_baseUrl/changepassword";
   static const String notificationStatus = "$_baseUrl/notificationStatus";

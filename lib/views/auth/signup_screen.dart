@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import '../../common/textform_field.dart';
 import '../../controller/signup_controller.dart';
 import '../../generated/assets.dart';
 import '../../routes/app_routes.dart';
+import 'widgets/legal_doc_modal.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -342,125 +344,139 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     );
                   }),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(() {
-                        return Transform.scale(
-                          scale: 0.9,
+                        return SizedBox(
+                          width: 24,
+                          height: 24,
                           child: Checkbox(
-                            value: controller.isSwitchActive.value,
-                            activeColor: Colors.black,
+                            value: controller.isTermsAccepted.value,
+                            activeColor: AppColor.darkGreenColor,
                             checkColor: Colors.white,
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             visualDensity: VisualDensity.compact,
-                            side: const BorderSide(color: Colors.grey),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            side: BorderSide(color: Colors.grey.shade400, width: 1.5),
                             onChanged: (value) {
-                              controller.isSwitchActive.value = value ?? false;
+                              final accepted = value ?? false;
+                              controller.isTermsAccepted.value = accepted;
+                              controller.isSwitchActive.value = accepted;
+                              controller.isPrivacySwitchActive.value = accepted;
                             },
                           ),
                         );
                       }),
-                      RichText(
-                        text: TextSpan(
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColor.blackColor,
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.blackColor,
+                              height: 1.3,
+                            ),
+                            children: [
+                              const TextSpan(
+                                text: 'I have read and agree to the CarryU ',
+                              ),
+                              TextSpan(
+                                text: 'Rider Terms of Service',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColor.blueColor,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColor.blueColor,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Get.toNamed(
+                                      AppRoutes.cmsScreen,
+                                      arguments: {'type': 'driver_terms'},
+                                    );
+                                  },
+                              ),
+                              const TextSpan(
+                                text: ' and ',
+                              ),
+                              TextSpan(
+                                text: 'Privacy Policy',
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColor.blueColor,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColor.blueColor,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Get.toNamed(
+                                      AppRoutes.cmsScreen,
+                                      arguments: {'type': 'privacy_policy'},
+                                    );
+                                  },
+                              ),
+                              const TextSpan(
+                                text: '.',
+                              ),
+                            ],
                           ),
-                          children: [
-                            TextSpan(
-                              text: 'I agree to the ',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.blackColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Terms & Conditions',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Obx(() {
-                        return Transform.scale(
-                          scale: 0.9,
-                          child: Checkbox(
-                            value: controller.isPrivacySwitchActive.value,
-                            activeColor: Colors.black,
-                            checkColor: Colors.white,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            visualDensity: VisualDensity.compact,
-                            side: const BorderSide(color: Colors.grey),
-                            onChanged: (value) {
-                              controller.isPrivacySwitchActive.value = value ?? false;
-                            },
-                          ),
-                        );
-                      }),
-                      RichText(
-                        text: TextSpan(
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColor.blackColor,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: 'I agree to the ',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: AppColor.blackColor,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'Privacy Policy',
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 32),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          controller.validationSignup();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.black,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(28),
+                      child: Obx(() {
+                        final bool isEnabled = controller.isTermsAccepted.value;
+                        return ElevatedButton(
+                          onPressed: () {
+                            controller.validationSignup();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isEnabled
+                                ? AppColor.darkGreenColor
+                                : AppColor.darkGreenColor.withOpacity(0.4),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            elevation: isEnabled ? 2 : 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Sign Up',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 16,
-                            color: AppColor.white,
-                            fontWeight: FontWeight.w500,
+                          child: Text(
+                            'Create account',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 16,
+                              color: AppColor.white,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
+                        );
+                      }),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'By tapping Create account, you agree to receive account-related messages by SMS and email.',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                          fontWeight: FontWeight.w400,
+                          height: 1.3,
                         ),
                       ),
                     ),

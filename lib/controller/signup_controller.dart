@@ -16,6 +16,9 @@ class SignupController extends GetxController
   Rx<bool> confirmPasswordVisibility = true.obs;
   var isSwitchActive = false.obs;
   var isPrivacySwitchActive = false.obs;
+  var isTermsAccepted = false.obs;
+
+  TextEditingController birthdateController = TextEditingController();
 
   late CameraHelper cameraHelper;
   final profileImage = RxnString();
@@ -107,13 +110,10 @@ class SignupController extends GetxController
       return;
     }
 
-    if (!isSwitchActive.value) {
-      Utils.showErrorToast(message: "Please accept terms & conditions.");
-      return;
-    }
-
-    if (!isPrivacySwitchActive.value) {
-      Utils.showErrorToast(message: "Please accept privacy policy.");
+    if (!isTermsAccepted.value && (!isSwitchActive.value || !isPrivacySwitchActive.value)) {
+      Utils.showErrorToast(
+        message: "Please agree to the CarryU Rider Terms of Service and Privacy Policy.",
+      );
       return;
     }
 
