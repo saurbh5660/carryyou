@@ -6,7 +6,8 @@ class ApiConstants {
   static const String userImageUrl = "http://15.206.216.86:4005";
   // static const String userImageUrl = "http://192.168.1.81:7766";
   static const String placesKey = "AIzaSyAXAv5h2hnQE1QChUPJRCGcEAcYKfOnqgI";
-  
+
+
   static const String login = "$_baseUrl/users/login";
   static const String signUp = "$_baseUrl/users/signUp";
   static const String otpVerify = "$_baseUrl/users/otpVerify";
